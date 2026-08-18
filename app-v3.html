@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aplikasi Teori Muzik | Nazry EduWeb Academy</title>
+<style>
+html,body{margin:0;width:100%;height:100%;background:#07111f;overflow:hidden}iframe{width:100%;height:100%;border:0;display:block}
+</style>
+</head>
+<body>
+<iframe id="app" src="/app-v2.html" title="Aplikasi Teori Muzik"></iframe>
+<script>
+const frame=document.getElementById('app');
+frame.addEventListener('load',()=>{
+  const w=frame.contentWindow;
+  const d=frame.contentDocument;
+
+  // Pastikan fungsi bunyi utama menggunakan sampler piano baharu dan perkusi sebenar.
+  w.playReal=function(name){
+    if(['C4','D4','E4','F4','G4'].includes(name)) return w.playPiano(name);
+    const map={tambourine:'tambourine',triangle:'triangle',claves:'claves',handdrum:'handdrum',gong:'gong',drum:'handdrum'};
+    if(map[name]) return w.playPerc(map[name]);
+  };
+
+  // Kemas kini Studio Bunyi Sebenar di halaman utama.
+  const studioTitle=[...d.querySelectorAll('.sectionTitle h2')].find(x=>x.textContent.includes('Studio Bunyi Sebenar'));
+  if(studioTitle){
+    const section=studioTitle.closest('.section');
+    const row=section.querySelector('.soundRow');
+    if(row){
+      row.innerHTML=`
+        <button class="sound" onclick="playReal('C4')">🎹 C</button>
+        <button class="sound" onclick="playReal('D4')">🎹 D</button>
+        <button class="sound" onclick="playReal('E4')">🎹 E</button>
+        <button class="sound" onclick="playReal('F4')">🎹 F</button>
+        <button class="sound" onclick="playReal('G4')">🎹 G</button>
+        <button class="sound alt" onclick="playReal('tambourine')">🪇 Tamborin</button>
+        <button class="sound" onclick="playReal('triangle')">△ Triangel</button>
+        <button class="sound gold" onclick="playReal('claves')">🪵 Claves</button>
+        <button class="sound gold" onclick="playReal('handdrum')">🪘 Hand Drum</button>
+        <button class="sound alt" onclick="playReal('gong')">🥁 Gong</button>`;
+    }
+    const p=section.querySelector('.sectionTitle p');
+    if(p)p.textContent='Sampel piano dan lima jenis perkusi digunakan untuk latihan pendengaran dan perbandingan timbre.';
+  }
+});
+</script>
+</body>
+</html>
